@@ -3,7 +3,7 @@ const logger = require('../logger');
 const config = require('../configuration').getConfiguration();
 const { execAsync } = require('../resource');
 
-const { getLanguageCommand, languageSupport } = dispatcherProtocol;
+const { getLanguageCommand, languageSupport } = dispatcherProtocol.pdu;
 
 module.exports.init = (socket) => {
   const packet = {
@@ -29,6 +29,7 @@ module.exports.testLanguages = async (pdu) => {
       logger.error(`Test of language '${languageName}' failed`);
     }
   }
+  logger.debug(`Tests done. Total number of languages tested: ${length}`);
 };
 
 /**

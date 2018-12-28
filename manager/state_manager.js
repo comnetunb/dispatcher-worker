@@ -3,10 +3,11 @@
  * Copyright (c) 2017 Matheus Medeiros Sarmento
  *
  */
-
+const dispatcherProtocol = require('dispatcher-protocol');
 const processManager = require('./task_manager');
-const { Command } = protocolRequire('dwp/pdu/perform_command');
-const { SlaveState } = protocolRequire('dwp/common');
+
+const { Command } = dispatcherProtocol.pdu;
+const { SlaveState } = dispatcherProtocol.common;
 
 const State = {
   EXECUTING: SlaveState.EXECUTING,

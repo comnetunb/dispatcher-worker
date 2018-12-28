@@ -1,9 +1,9 @@
 // General Requirements
 const logger = require('../logger');
+const dispatcherProtocol = require('dispatcher-protocol');
 
 // Protocol Related
-const factory = protocolRequire('dwp/factory');
-const { Id } = protocolRequire('dwp/factory');
+const { factory } = dispatcherProtocol;
 
 // DWP Handler Related
 const getReportHandler = require('./handler/get_report_handler');
@@ -27,27 +27,27 @@ module.exports.treat = (packet, socket) => {
 
 function chooseHandler(pdu, socket) {
   switch (pdu.header.id) {
-    case Id.GET_REPORT:
+    case factory.Id.GET_REPORT:
       getReportHandler.execute(pdu, socket);
       break;
 
-    case Id.PERFORM_TASK:
+    case factory.Id.PERFORM_TASK:
       performTaskHandler.execute(pdu, socket);
       break;
 
-    case Id.TERMINATE_TASK:
+    case factory.Id.TERMINATE_TASK:
       terminateTaskHandler.execute(pdu, socket);
       break;
 
-    case Id.PERFORM_COMMAND:
+    case factory.Id.PERFORM_COMMAND:
       performCommandHandler.execute(pdu, socket);
       break;
 
-    case Id.GET_LANGUAGE_SUPPORT:
+    case factory.Id.GET_LANGUAGE_SUPPORT:
       languageManager.getLanguageSupport(pdu, socket);
       break;
 
-    case Id.LANGUAGE_COMMAND:
+    case factory.Id.LANGUAGE_COMMAND:
       languageManager.testLanguages(pdu);
       break;
 

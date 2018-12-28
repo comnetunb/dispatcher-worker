@@ -11,6 +11,7 @@
     "test": "npm run lint"
   },
   "dependencies": {
+    "dispatcher-protocol": "^1.0.0",
     "log4js": "^2.3.4",
     "mkdirp": "^0.5.1",
     "os-utils": "0.0.14",

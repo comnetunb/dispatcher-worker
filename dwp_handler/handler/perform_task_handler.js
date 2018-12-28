@@ -1,5 +1,6 @@
 // General
 const parseDataUrl = require('parse-data-url');
+const dispatcherProtocol = require('dispatcher-protocol');
 const logger = require('../../logger');
 
 // Management Related
@@ -8,8 +9,7 @@ const stateManager = require('./../../manager/state_manager');
 const tempManager = require('./../../manager/temp_manager');
 
 // Protocol Related
-const performTaskResponse = protocolRequire('dwp/pdu/perform_task_response');
-const taskResult = protocolRequire('dwp/pdu/task_result');
+const { performTaskResponse, taskResult } = dispatcherProtocol.pdu;
 
 module.exports.execute = (pdu, socket) => {
   if (stateManager.getCurrentState() === stateManager.State.PAUSED) {

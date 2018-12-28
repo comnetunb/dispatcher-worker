@@ -1,7 +1,3 @@
-global.protocolRequire = (name) => {
-   return require(`${__dirname}/DisysBot-Protocol/${name}`);
-};
-
 const ddp = require('./ddp');
 const communication = require('./communication');
 const logger = require('./logger');

@@ -6,8 +6,9 @@
 
 // General Requirements
 const net = require('net');
-const logger = require('./logger');
 const EventEmitter = require('events');
+const { factory } = require('dispatcher-protocol');
+const logger = require('./logger');
 
 const event = new EventEmitter();
 module.exports.event = event;
@@ -22,7 +23,6 @@ const languageManager = require('./manager/language_manager');
 const ddp = require('./ddp');
 
 // Protocol Related
-const factory = protocolRequire('dwp/factory');
 
 let socket = new net.Socket();
 

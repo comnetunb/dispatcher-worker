@@ -1,9 +1,9 @@
+const dispatcherProtocol = require('dispatcher-protocol');
 const logger = require('../logger');
 const config = require('../configuration').getConfiguration();
 const { execAsync } = require('../resource');
 
-const getLanguageCommand = protocolRequire('dwp/pdu/get_language_command');
-const languageSupport = protocolRequire('dwp/pdu/language_support');
+const { getLanguageCommand, languageSupport } = dispatcherProtocol;
 
 module.exports.init = (socket) => {
   const packet = {

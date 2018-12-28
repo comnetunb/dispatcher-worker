@@ -1,5 +1,6 @@
 
 const extend = require('util')._extend;
+const dispatcherProtocol = require('dispatcher-protocol');
 
 const config = require('../../configuration').getConfiguration();
 const resource = require('./../../resource');
@@ -7,8 +8,8 @@ const stateManager = require('./../../manager/state_manager');
 const taskManager = require('./../../manager/task_manager');
 const languageManager = require('./../../manager/language_manager');
 
-const report = protocolRequire('dwp/pdu/report');
-const { Flags } = protocolRequire('dwp/common');
+const { report } = dispatcherProtocol.pdu;
+const { Flags } = dispatcherProtocol.common;
 
 module.exports.execute = (pdu, socket) => {
   resource.getCpuUsage((cpuUsage) => {

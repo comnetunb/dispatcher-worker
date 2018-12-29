@@ -1,0 +1,9 @@
+.eslintrc
+.gitattributes
+.gitignore
+.gitattributes
+*Dockerfile*
+*docker-compose*
+node_modules
+README.md
+config

@@ -7,6 +7,7 @@
     "name": "Matheus Medeiros"
   },
   "scripts": {
+    "start": "node index.js",
     "lint": "esw *.js manager dwp_handler --color",
     "test": "npm run lint"
   },
@@ -16,8 +17,7 @@
     "mkdirp": "^0.5.1",
     "os-utils": "0.0.14",
     "parse-data-url": "^0.2.0",
-    "rimraf": "~2.6.1",
-    "validate-ip-node": "^1.0.6"
+    "rimraf": "~2.6.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",

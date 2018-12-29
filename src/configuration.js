@@ -5,7 +5,7 @@
  */
 
 const fs = require('fs');
-const validateIP = require('validate-ip-node');
+const helpers = require('./helpers');
 const logger = require('./logger');
 
 let configuration = {};
@@ -26,7 +26,7 @@ module.exports.setLanguageVersions = (versions) => {
 
 function load() {
   try {
-    configuration = JSON.parse(fs.readFileSync(`${__dirname}/config/config.json`, 'utf8').replace(/^\uFEFF/, ''));
+    configuration = JSON.parse(fs.readFileSync(`${__dirname}/../config/config.json`, 'utf8').replace(/^\uFEFF/, ''));
   } catch (err) {
     logger.error('Error while loading configuration files, treating everything as default');
   }
@@ -35,13 +35,13 @@ function load() {
 }
 
 function treatDefaultValues() {
-  if (!validateIP(configuration.DispatcherAddress)) {
-    logger.warn('Master IP Address is invalid or undefined. Default: undefined');
-    configuration.DispatcherAddress = undefined;
+  if (configuration.dispatcherAddress && !helpers.validateIp(configuration.dispatcherAddress)) {
+    logger.debug('Master\'s defined IP is invalid. Removing configuration...');
+    configuration.dispatcherAddress = undefined;
   }
 
   if (configuration.languages === undefined) {
-    logger.warn('Supported languages are not defined. Default: Allow all working languages');
+    logger.warn('Supported languages are not defined. Allowing all possible languages');
     configuration.languages = {
       list: [],
       map: {},
@@ -52,12 +52,12 @@ function treatDefaultValues() {
     // if allow_others is undefined or not boolean
     if (configuration.languages.allow_others === undefined
       || typeof (configuration.languages.allow_others) !== 'boolean') {
-      logger.warn('Permission to run other languages is undefined or not a boolean. Default: true');
+      logger.warn('Permission to run other languages is undefined or not a boolean. Defaulting to true');
       configuration.languages.allow_others = true;
     }
     // if list is undefined, it is empty
     if (configuration.languages.list === undefined) {
-      logger.warn('List of supported languages is undefined. Default: []');
+      logger.warn('List of supported languages is undefined. Defaulting to none');
       configuration.languages.list = [];
       configuration.languages.map = {};
     } else {

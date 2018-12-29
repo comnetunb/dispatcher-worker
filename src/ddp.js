@@ -60,11 +60,11 @@ function resume() {
       return undefined;
     }
 
-    if (tries >= 10 && (configuration.DispatcherAddress !== undefined)) {
+    if (tries >= 10 && (configuration.dispatcherAddress !== undefined)) {
       logger.debug(`${tries} tries to connect to master via UDP broadcast. Trying again with address configured`);
       tries = 0;
       clearInterval(intervalId);
-      return event.emit('dispatcher_address', configuration.DispatcherAddress);
+      return event.emit('dispatcher_address', configuration.dispatcherAddress);
     }
 
     tries += 1;

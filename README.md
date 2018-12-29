@@ -1,18 +1,15 @@
-# Slave
+# Dispatcher's Slave
+
+Save application on a distributed system managed by [Master](https://github.com/comnetunb/dispatcher-master)). This is a service where its main purpose is to process tasks sent by master.
 
 See also: 
 
-- [Master](https://github.com/comnetunb/DisysBot-Master)
-- [Protocol](https://github.com/comnetunb/DisysBot-Protocol)
-
-## Introduction
-Save application on a distributed system managed by [Master](https://github.com/comnetunb/DisysBot-Master)). This is a lightweight  service where its main purpose is to process tasks sent by master.
+- [Master](https://github.com/comnetunb/dispatcher-master)
+- [Protocol](https://github.com/comnetunb/dispatcher-protocol)
 
 ## Getting started
 
-### Building and installing
-
-#### Prereqs:
+### Pre requisites
 
 Everything you need is to install Docker CE (Community Edition):
 
@@ -24,7 +21,7 @@ Everything you need is to install Docker CE (Community Edition):
 
 ### Running
 
-After installing Docker, all you need to do is run the latest published docker image:
+After installing Docker, just run our latest published docker image:
 
 ```bash
 $ sudo docker run [-v <configuration-file-path>:/opt/app/config/json] -d comnetunb/dispatcher-slave

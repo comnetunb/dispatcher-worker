@@ -73,7 +73,7 @@ function resume() {
 }
 
 function send() {
-  const message = 'NewSlave';
+  const message = 'NewWorker';
 
   // Send message and wait for master's response
   socket.send(message, 0, message.length, 16180, '255.255.255.255');

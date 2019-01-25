@@ -1,6 +1,6 @@
-# Dispatcher's Slave
+# Dispatcher's Worker
 
-Save application on a distributed system managed by [Master](https://github.com/comnetunb/dispatcher-master)). This is a service where its main purpose is to process tasks sent by master.
+Save application on a distributed system managed by the Dispatcher [Master](https://github.com/comnetunb/dispatcher-master)). This is a service where its main purpose is to process tasks sent by master.
 
 See also: 
 
@@ -24,14 +24,14 @@ Everything you need is to install Docker CE (Community Edition):
 After installing Docker, just run our latest published docker image:
 
 ```bash
-$ sudo docker run [-v <configuration-file-path>:/opt/app/config/json] -d comnetunb/dispatcher-slave
+$ sudo docker run [-v <configuration-file-path>:/opt/app/config/json] -d comnetunb/dispatcher-worker
 ```
 
-The first option, `-v <configuration-file-path>:/opt/app/config/json`, is optional and maps a local config file to be used by the slave. If you wish to use a configuration file, change `<configuration-file-path>` for the absolute path of the configuration file you would like to use. For more details regarding the configuration file, see [Configuration file](#configuration-file).
+The first option, `-v <configuration-file-path>:/opt/app/config/json`, is optional and maps a local config file to be used by the worker. If you wish to use a configuration file, change `<configuration-file-path>` for the absolute path of the configuration file you would like to use. For more details regarding the configuration file, see [Configuration file](#configuration-file).
 
 
 ## Configuration file
-You can tweak the slave configuration on a json file that can have the following format:
+You can tweak the worker configuration on a json file that can have the following format:
 
 ```json
 {
@@ -45,6 +45,6 @@ You can tweak the slave configuration on a json file that can have the following
 ```
 
 ### Properties
-- alias: defines an alias for the slave machine
-- dispatcherAddress: sets the IP of a reachable master. If this property is set, the application will try to connect to it directly. If this property is not set, the connection mechanism will be the automatic discovery, that only works on a master configured on a local network shared by the slave aplication.
+- alias: defines an alias for the worker machine
+- dispatcherAddress: sets the IP of a reachable master. If this property is set, the application will try to connect to it directly. If this property is not set, the connection mechanism will be the automatic discovery, that only works on a master configured on a local network shared by the worker aplication.
 - languages: lists the languages currently supported by the machine

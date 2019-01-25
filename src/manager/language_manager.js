@@ -83,7 +83,7 @@ module.exports.getLanguageSupport = async (pdu, socket) => {
 };
 
 /**
- * Returns languages supported by the slave.
+ * Returns languages supported by the worker.
  * @return {Array} - Objects representing languages with the properties
  * 'name' and also possibly 'command' and 'version', if they are defined on runtime.
  */

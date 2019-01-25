@@ -7,32 +7,32 @@ const dispatcherProtocol = require('dispatcher-protocol');
 const processManager = require('./task_manager');
 
 const { Command } = dispatcherProtocol.pdu;
-const { SlaveState } = dispatcherProtocol.common;
+const { WorkerState } = dispatcherProtocol.common;
 
 const State = {
-  EXECUTING: SlaveState.EXECUTING,
-  PAUSED: SlaveState.PAUSED
+  EXECUTING: WorkerState.EXECUTING,
+  PAUSED: WorkerState.PAUSED
 };
 
-let state = SlaveState.EXECUTING;
+let state = WorkerState.EXECUTING;
 
 function handleCommand(command) {
   switch (command) {
     case Command.PAUSE:
-      if (state === SlaveState.Paused) {
+      if (state === WorkerState.Paused) {
         return;
       }
 
-      state = SlaveState.PAUSED;
+      state = WorkerState.PAUSED;
       processManager.killAll();
       break;
 
     case Command.RESUME:
-      if (state === SlaveState.Executing) {
+      if (state === WorkerState.Executing) {
         return;
       }
 
-      state = SlaveState.EXECUTING;
+      state = WorkerState.EXECUTING;
       break;
 
     case Command.STOP:

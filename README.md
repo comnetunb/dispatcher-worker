@@ -11,24 +11,19 @@ See also:
 
 ### Pre requisites
 
-Everything you need is to install Docker CE (Community Edition):
-
-- [CentOS](https://docs.docker.com/install/linux/docker-ce/centos/)
-- [Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
-- [Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/)
-- [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-- [Others](https://docs.docker.com/install/linux/docker-ce/binaries)
+- [Node](https://nodejs.org/en/download/)
 
 ### Running
 
-After installing Docker, just run our latest published docker image:
+After installing Node, download and run the Worker with:
 
 ```bash
-$ sudo docker run [-v <configuration-file-path>:/opt/app/config/json] -d comnetunb/dispatcher-worker
+$ git clone https://github.com/comnetunb/dispatcher-worker
+$ cd dispatcher-worker
+$ node index.js
 ```
 
-The first option, `-v <configuration-file-path>:/opt/app/config/json`, is optional and maps a local config file to be used by the worker. If you wish to use a configuration file, change `<configuration-file-path>` for the absolute path of the configuration file you would like to use. For more details regarding the configuration file, see [Configuration file](#configuration-file).
-
+If you'd like to change the [Configuration file](#configuration-file), open it at `dispatcher-worker/config/config.json`.
 
 ## Configuration file
 You can tweak the worker configuration on a json file that can have the following format:

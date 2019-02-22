@@ -13,6 +13,16 @@ See also:
 
 - [Node](https://nodejs.org/en/download/)
 
+#### For Docker
+
+If you want to run it as a dockerized container, everything you need is to install Docker CE (Community Edition):
+
+- [CentOS](https://docs.docker.com/install/linux/docker-ce/centos/)
+- [Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
+- [Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/)
+- [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+- [Others](https://docs.docker.com/install/linux/docker-ce/binaries)
+
 ### Running
 
 After installing Node, download and run the Worker with:
@@ -25,6 +35,18 @@ $ node index.js
 ```
 
 If you'd like to change the [Configuration file](#configuration-file), open it at `dispatcher-worker/config/config.json`.
+
+#### For Docker
+
+After installing Docker, just run our latest published docker image:
+
+```bash
+$ sudo docker run [-v <configuration-file-path>:/opt/app/config/json] -d comnetunb/dispatcher-worker
+```
+
+The first option, `-v <configuration-file-path>:/opt/app/config/json`, is optional and maps a local config file to be used by the worker. If you wish to use a configuration file, change `<configuration-file-path>` for the absolute path of the configuration file you would like to use. For more details regarding the configuration file, see [Configuration file](#configuration-file).
+
+
 
 ## Configuration file
 You can tweak the worker configuration on a json file that can have the following format:

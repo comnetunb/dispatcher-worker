@@ -20,6 +20,7 @@ After installing Node, download and run the Worker with:
 ```bash
 $ git clone https://github.com/comnetunb/dispatcher-worker
 $ cd dispatcher-worker
+$ npm install --only=prod
 $ node index.js
 ```
 

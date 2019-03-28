@@ -55,16 +55,12 @@ module.exports.execute = (pdu, socket) => {
 
               packet.code = taskResult.ReturnCode.ERROR;
               packet.output = err;
-            }
-
-            if (stderr) {
+            } else if (stderr) {
               logger.error(`Simulation has finished with error.\n${stderr}`);
 
               packet.code = taskResult.ReturnCode.ERROR;
               packet.output = stderr;
-            }
-
-            if (stdout) {
+            } else {
               logger.info('Simulation has finished with success');
 
               packet.code = taskResult.ReturnCode.SUCCESS;

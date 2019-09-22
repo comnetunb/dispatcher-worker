@@ -7,7 +7,8 @@
     "name": "Matheus Medeiros"
   },
   "scripts": {
-    "start": "node index.js",
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
     "lint": "esw *.js manager dwp_handler --color",
     "test": "npm run lint"
   },

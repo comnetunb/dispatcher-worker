@@ -263,3 +263,4 @@ __pycache__/
 
 package-lock.json
 /src/tmp
+/dist

@@ -1,16 +1,15 @@
-const fs = require('fs');
-const mkdirp = require('mkdirp');
-const rimraf = require('rimraf');
+import * as fs from 'fs';
+import * as mkdirp from 'mkdirp';
+import * as rimraf from 'rimraf';
 
 const tmpDir = `${__dirname}/../tmp/`;
 
-const getCWD = (id) => {
+export function getCWD(id: string): string {
   return `${tmpDir}/${id}/`;
 };
 
-module.exports.getCWD = getCWD;
 
-module.exports.clean = () => {
+export function clean(): void {
   // fs.readdir(tmpDir, function (err, files) {
   //   if (err) {
   //     throw err
@@ -26,8 +25,8 @@ module.exports.clean = () => {
   // })
 };
 
-module.exports.create = (id, fileName, data) => {
-  return new Promise((resolve, reject) => {
+export function create(id: string, fileName: string, data: any): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
     mkdirp(getCWD(id), (e) => {
       if (e) {
         reject(e);
@@ -44,6 +43,6 @@ module.exports.create = (id, fileName, data) => {
   });
 };
 
-module.exports.delete = (id) => {
+export function remove(id: string): any {
   rimraf(getCWD(id), () => { });
 };

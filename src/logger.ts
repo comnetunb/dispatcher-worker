@@ -1,6 +1,6 @@
-const log4js = require('log4js');
+import { configure, getLogger } from 'log4js';
 
-log4js.configure({
+configure({
   appenders: {
     out: { type: 'stdout' },
     app: { type: 'file', filename: 'log/app.log' }
@@ -10,4 +10,4 @@ log4js.configure({
   }
 });
 
-module.exports = log4js.getLogger();
+export const logger = getLogger();

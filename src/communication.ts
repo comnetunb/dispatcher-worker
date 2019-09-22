@@ -1,32 +1,17 @@
-/*
- *
- * Copyright (c) 2017 Matheus Medeiros Sarmento
- *
- */
+import * as net from 'net';
+import * as EventEmitter from 'events';
+import { RemoveFirstPDU, ExposeFirstPDU } from 'dispatcher-protocol';
+import * as dwpManager from './dwp_handler/manager';
+import * as languageManager from './manager/language_manager';
+import * as ddp from './ddp';
+import { logger } from './logger';
 
-// General Requirements
-const net = require('net');
-const EventEmitter = require('events');
-const { factory } = require('dispatcher-protocol');
-const logger = require('./logger');
-
-const event = new EventEmitter();
-module.exports.event = event;
-
-// DWP Handler Related
-const dwpManager = require('./dwp_handler/manager');
-
-// Require to init and check existing languages
-const languageManager = require('./manager/language_manager');
-
-// DDP Related
-const ddp = require('./ddp');
+export const event = new EventEmitter();
 
 // Protocol Related
-
 let socket = new net.Socket();
 
-module.exports.execute = () => {
+export function execute(): void {
   ddp.event.on('address', (address) => {
     let buffer = '';
 
@@ -44,10 +29,10 @@ module.exports.execute = () => {
       try {
         do {
           // This may throw an exception
-          packet = factory.expose(buffer);
+          packet = ExposeFirstPDU(buffer);
 
           // This may throw an exception
-          buffer = factory.remove(buffer);
+          buffer = RemoveFirstPDU(buffer);
 
           dwpManager.treat(packet, socket);
         } while (buffer.length !== 0);
@@ -60,8 +45,8 @@ module.exports.execute = () => {
     socket.on('error', (err) => {
       socket.destroy();
 
-      if (err.code) {
-        logger.warn(err.code);
+      if (err.message) {
+        logger.warn(err.message);
       }
     });
 

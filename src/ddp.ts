@@ -1,25 +1,15 @@
-/*
- *
- * Copyright (c) 2017 Matheus Medeiros Sarmento
- *
- */
+import * as dgram from 'dgram';
+import * as EventEmitter from 'events';
+import * as Config from './configuration';
+import { logger } from './logger';
 
-// Master Discovery Protocol
-
-const dgram = require('dgram');
-const EventEmitter = require('events');
-const configuration = require('./configuration').getConfiguration();
-
-// Responsible for loggin into console and log file
-const logger = require('./logger');
-
-const event = new EventEmitter();
-
+const configuration = Config.getConfiguration();
+const socket = dgram.createSocket('udp4');
 let receivedResponse = false;
 
-const socket = dgram.createSocket('udp4');
+export const event = new EventEmitter();
 
-function execute() {
+export function execute(): void {
   socket.on('listening', () => {
     socket.setBroadcast(true);
 
@@ -46,7 +36,7 @@ function execute() {
   socket.bind();
 }
 
-function resume() {
+export function resume(): void {
   logger.debug('Trying to discover master via UDP broadcast');
 
   send();
@@ -72,15 +62,9 @@ function resume() {
   }, 1000);
 }
 
-function send() {
+function send(): void {
   const message = 'NewWorker';
 
   // Send message and wait for master's response
   socket.send(message, 0, message.length, 16180, '255.255.255.255');
 }
-
-module.exports = {
-  execute,
-  resume,
-  event
-};

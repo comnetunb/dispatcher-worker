@@ -15,7 +15,6 @@ export function execute(pdu: PerformTask, socket: net.Socket): Promise<void> {
   }
 
   logger.debug('New task received!');
-
   try {
     return Promise
       .all(pdu.files.map((file) => {
@@ -33,15 +32,10 @@ export function execute(pdu: PerformTask, socket: net.Socket): Promise<void> {
         const options = {
           cwd: tempManager.getCWD(pdu.task.id)
         };
-
         taskManager.execTask(
           pdu.commandLine, pdu.task.id, options,
-          (id, killed, err, stdout, stderr) => {
+          (id, err, stdout, stderr) => {
             tempManager.remove(id);
-            if (killed) {
-              return undefined;
-            }
-
             const taskResult: TaskResult = {
               type: ProtocolType.TaskResult,
               task: pdu.task,

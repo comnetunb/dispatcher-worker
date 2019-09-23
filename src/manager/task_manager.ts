@@ -6,19 +6,17 @@ const tasks: {
 } = {};
 
 export function execTask(commandLine: string, id: string, options: ExecOptions,
-  callback: (id: string, finished: boolean, err: ExecException | null, stdout: string, stderr: string) => void): void {
+  callback: (id: string, err: ExecException | null, stdout: string, stderr: string) => void): void {
 
-  let finished = false;
   const childProcess = exec(commandLine, options, (err, stdout, stderr) => {
-    finished = true;
-
     delete tasks[id];
-    callback(id, finished, err, stdout, stderr);
+    callback(id, err, stdout, stderr);
   });
 
-  if (!finished && tasks[id] === undefined) {
+  if (tasks[id] === undefined) {
     tasks[id] = {
       id,
+      startTime: new Date(),
       pid: childProcess.pid,
     };
   }

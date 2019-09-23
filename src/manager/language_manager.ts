@@ -30,7 +30,7 @@ export async function testLanguages(pdu: LanguageCommand) {
       logger.error(`Test of language '${languageName}' failed`);
     }
   }
-  logger.debug(`Tests done. Total number of languages tested: ${length}`);
+  logger.debug(`Tests done. Total number of languages tested: ${languages.length}`);
 };
 
 /**

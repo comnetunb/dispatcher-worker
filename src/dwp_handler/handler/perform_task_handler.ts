@@ -56,7 +56,7 @@ export function execute(pdu: PerformTask, socket: net.Socket): Promise<void> {
               logger.info('Simulation has finished with success');
 
               taskResult.code = ReturnCode.Success;
-              taskResult.output = stdout;
+              taskResult.output = stdout.replace(new RegExp('NaN,', 'g'), 'null,');
             }
 
             return socket.write(EncapsulatePDU(taskResult));

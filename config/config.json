@@ -1,6 +1,6 @@
 ﻿{
   "alias": "ARCTURUS01",
-  "ipAddress": "127.0.0.1",
+  "dispatcherAddress": "127.0.0.1",
   "languages": {
     "allow_others": true,
     "list": ["java", "python", "c++"]

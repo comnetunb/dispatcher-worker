@@ -2,7 +2,7 @@
 import * as parseDataUrl from 'parse-data-url';
 import * as net from 'net';
 import { logger } from '../../logger';
-import { PerformTask, WorkerState, PerformTaskResponse, ProtocolType, ReturnCode, EncapsulatePDU, TaskResult } from 'dispatcher-protocol';
+import { PerformTask, WorkerState, PerformTaskResponse, ProtocolType, ReturnCode, EncapsulatePDU, TaskResult, ProtocolFile } from 'dispatcher-protocol';
 
 // Management Related
 import * as taskManager from './../../manager/task_manager';
@@ -17,9 +17,9 @@ export function execute(pdu: PerformTask, socket: net.Socket): Promise<void> {
   logger.debug('New task received!');
   try {
     return Promise
-      .all(pdu.files.map((file) => {
-        const parsed = parseDataUrl(file.dataURL);
-        return tempManager.create(pdu.task.id, file.name, parsed.toBuffer());
+      .all(pdu.files.map((file: ProtocolFile) => {
+        const buffer = Buffer.from(file.content, 'base64');
+        return tempManager.create(pdu.task.id, file.name, buffer);
       }))
       .then(() => {
         const response: PerformTaskResponse = {
@@ -64,9 +64,36 @@ export function execute(pdu: PerformTask, socket: net.Socket): Promise<void> {
         );
       })
       .catch((e) => {
+        const taskResult: TaskResult = {
+          type: ProtocolType.TaskResult,
+          task: pdu.task,
+          code: ReturnCode.Executing,
+          output: '',
+        }
+
+        taskResult.code = ReturnCode.Error;
+        taskResult.output = e.message;
+
+        socket.write(EncapsulatePDU(taskResult), (err => {
+          if (err) logger.error(err, "Could not send failed task result");
+        }));
         logger.error(e);
       });
   } catch (e) {
+    const taskResult: TaskResult = {
+      type: ProtocolType.TaskResult,
+      task: pdu.task,
+      code: ReturnCode.Executing,
+      output: '',
+    }
+
+    taskResult.code = ReturnCode.Error;
+    taskResult.output = e.message;
+
+    socket.write(EncapsulatePDU(taskResult), (err => {
+      if (err) logger.error(err, "Could not send failed task result");
+    }));
+
     logger.error(e);
   }
 };

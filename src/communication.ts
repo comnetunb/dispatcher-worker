@@ -14,7 +14,6 @@ let socket = new net.Socket();
 export function execute(): void {
   ddp.event.on('address', (address) => {
     let buffer = '';
-
     logger.debug(`Trying to connect to ${address}:16180`);
 
     socket = net.createConnection({ host: address, port: 16180 }, () => {

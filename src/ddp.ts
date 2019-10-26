@@ -54,7 +54,8 @@ export function resume(): void {
       logger.debug(`${tries} tries to connect to master via UDP broadcast. Trying again with address configured`);
       tries = 0;
       clearInterval(intervalId);
-      return event.emit('dispatcher_address', configuration.dispatcherAddress);
+      event.emit('address', configuration.dispatcherAddress);
+      return;
     }
 
     tries += 1;

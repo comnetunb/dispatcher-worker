@@ -6,8 +6,8 @@ export interface ExecOutput {
   stderr: string,
 }
 
-export function getAvailableMemory(): number {
-  return os.freemem() / os.totalmem();
+export function getUsedMemory(): number {
+  return 1 - (os.freemem() / os.totalmem());
 };
 
 // https://github.com/oscmejia/os-utils/blob/4210697ff3b412643e1b4061ebf9ec727a7fe9b7/lib/osutils.js

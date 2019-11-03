@@ -15,8 +15,8 @@ export async function execute(pdu: GetReport, socket: net.Socket): Promise<void>
 
   if (pdu.resources) {
     response.resources = {
-      cpu: 1 - (await resource.getCpuUsageAsync()),
-      memory: resource.getAvailableMemory(),
+      cpu: await resource.getCpuUsageAsync(),
+      memory: resource.getUsedMemory(),
     };
   }
 

@@ -8,7 +8,7 @@ import * as net from 'net';
 
 const configuration = Config.getConfiguration();
 
-export async function execute(pdu: GetReport, socket: net.Socket): Promise<void> {
+export async function execute(pdu: GetReport, socket: SocketIOClient.Socket): Promise<void> {
   const response: Report = {
     type: ProtocolType.Report,
   };
@@ -42,5 +42,5 @@ export async function execute(pdu: GetReport, socket: net.Socket): Promise<void>
     }
   }
 
-  socket.write(EncapsulatePDU(response));
+  socket.emit('data', EncapsulatePDU(response));
 };

@@ -6,14 +6,14 @@ import * as net from 'net';
 
 const config = Config.getConfiguration();
 
-export function init(socket: net.Socket): void {
+export function init(socket: SocketIOClient.Socket): void {
   const packet: GetLanguageCommand = {
     type: ProtocolType.GetLanguageCommand,
     languages: [],
   };
 
   logger.debug('Requesting commands for all languages defined in the config file');
-  socket.write(EncapsulatePDU(packet));
+  socket.emit('data', EncapsulatePDU(packet));
 };
 
 export async function testLanguages(pdu: LanguageCommand) {
@@ -55,7 +55,7 @@ export async function executeLanguageTest(language: LanguageTestInfo): Promise<L
   return languageInfo;
 };
 
-export async function getLanguageSupport(pdu: GetLanguageSupport, socket: net.Socket): Promise<void> {
+export async function getLanguageSupport(pdu: GetLanguageSupport, socket: SocketIOClient.Socket): Promise<void> {
   const packet: LanguageSupport = {
     type: ProtocolType.LanguageSupport,
     languageInfo: {
@@ -79,7 +79,7 @@ export async function getLanguageSupport(pdu: GetLanguageSupport, socket: net.So
       logger.error(err);
     }
   }
-  socket.write(EncapsulatePDU(packet));
+  socket.emit('data', EncapsulatePDU(packet));
 };
 
 /**

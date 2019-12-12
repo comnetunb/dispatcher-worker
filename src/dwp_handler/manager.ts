@@ -10,7 +10,7 @@ import * as terminateTaskHandler from './handler/terminate_task_handler';
 import * as performCommandHandler from './handler/perform_command_handler';
 import * as languageManager from '../manager/language_manager';
 
-export function treat(packet: string, socket: net.Socket): void {
+export function treat(packet: string, socket: SocketIOClient.Socket): void {
   let pdu: PDU;
 
   try {
@@ -22,7 +22,7 @@ export function treat(packet: string, socket: net.Socket): void {
   return chooseHandler(pdu, socket);
 };
 
-function chooseHandler(pdu: PDU, socket: net.Socket) {
+function chooseHandler(pdu: PDU, socket: SocketIOClient.Socket) {
   switch (pdu.data.type) {
     case ProtocolType.GetReport:
       getReportHandler.execute(pdu.data as GetReport, socket);

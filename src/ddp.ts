@@ -18,7 +18,7 @@ export function execute(): void {
       return event.emit('address', configuration.dispatcherAddress);
     }
 
-    return resume();
+    logger.fatal('Configure dispatcher address please');
   });
 
   socket.on('message', (message, rinfo) => {
@@ -37,35 +37,8 @@ export function execute(): void {
 }
 
 export function resume(): void {
-  logger.debug('Trying to discover master via UDP broadcast');
-
-  send();
-
-  let tries = 0;
-
-  const intervalId = setInterval(() => {
-    if (receivedResponse) {
-      receivedResponse = false;
-      clearInterval(intervalId);
-      return undefined;
-    }
-
-    if (tries >= 10 && (configuration.dispatcherAddress !== undefined)) {
-      logger.debug(`${tries} tries to connect to master via UDP broadcast. Trying again with address configured`);
-      tries = 0;
-      clearInterval(intervalId);
-      event.emit('address', configuration.dispatcherAddress);
-      return;
-    }
-
-    tries += 1;
-    return send();
-  }, 1000);
-}
-
-function send(): void {
-  const message = 'NewWorker';
-
-  // Send message and wait for master's response
-  socket.send(message, 0, message.length, 16180, '255.255.255.255');
+  if (configuration.dispatcherAddress !== undefined) {
+    event.emit('address', configuration.dispatcherAddress);
+    return;
+  }
 }

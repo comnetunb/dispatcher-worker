@@ -18,11 +18,13 @@
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^12.7.5",
     "@types/rimraf": "^2.0.2",
+    "@types/socket.io-client": "^1.4.32",
     "dispatcher-protocol": "^4.0.0",
     "log4js": "^3.0.6",
     "mkdirp": "^0.5.1",
     "parse-data-url": "^0.2.0",
     "rimraf": "~2.6.1",
+    "socket.io-client": "^2.3.0",
     "typescript": "^3.6.3"
   },
   "devDependencies": {

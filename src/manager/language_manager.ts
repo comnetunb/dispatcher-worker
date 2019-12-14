@@ -3,6 +3,7 @@ import { logger } from '../logger';
 import * as Config from '../configuration';
 import { execAsync } from '../resource';
 import * as net from 'net';
+import { send } from '../communication';
 
 const config = Config.getConfiguration();
 
@@ -13,7 +14,7 @@ export function init(socket: SocketIOClient.Socket): void {
   };
 
   logger.debug('Requesting commands for all languages defined in the config file');
-  socket.emit('data', EncapsulatePDU(packet));
+  send(packet);
 };
 
 export async function testLanguages(pdu: LanguageCommand) {
@@ -79,7 +80,7 @@ export async function getLanguageSupport(pdu: GetLanguageSupport, socket: Socket
       logger.error(err);
     }
   }
-  socket.emit('data', EncapsulatePDU(packet));
+  send(packet);
 };
 
 /**

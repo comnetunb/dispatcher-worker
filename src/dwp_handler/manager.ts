@@ -10,19 +10,7 @@ import * as terminateTaskHandler from './handler/terminate_task_handler';
 import * as performCommandHandler from './handler/perform_command_handler';
 import * as languageManager from '../manager/language_manager';
 
-export function treat(packet: string, socket: SocketIOClient.Socket): void {
-  let pdu: PDU;
-
-  try {
-    pdu = JSON.parse(packet.toString());
-  } catch (e) {
-    return logger.fatal(e);
-  }
-
-  return chooseHandler(pdu, socket);
-};
-
-function chooseHandler(pdu: PDU, socket: SocketIOClient.Socket) {
+export function treat(pdu: PDU, socket: SocketIOClient.Socket): void {
   switch (pdu.data.type) {
     case ProtocolType.GetReport:
       getReportHandler.execute(pdu.data as GetReport, socket);

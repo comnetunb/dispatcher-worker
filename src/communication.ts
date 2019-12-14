@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as EventEmitter from 'events';
-import { RemoveFirstPDU, ExposeFirstPDU } from 'dispatcher-protocol';
+import { RemoveFirstPDU, ExposeFirstPDU, PDU, ProtocolVersion, CommandData, PDUHeader } from 'dispatcher-protocol';
 import * as dwpManager from './dwp_handler/manager';
 import * as languageManager from './manager/language_manager';
 import * as ddp from './ddp';
@@ -12,12 +12,35 @@ export const event = new EventEmitter();
 
 // Protocol Related
 
+let socket: SocketIOClient.Socket = null;
+
+export function send(data: CommandData, callback?: (err: any) => any): void {
+  if (socket == null) return;
+
+  let header: PDUHeader = {
+    ts: new Date(),
+    v: ProtocolVersion,
+  }
+
+  let packet: PDU = {
+    header,
+    data,
+  }
+
+  socket.emit('data', packet, callback);
+};
+
+
 export function execute(): void {
   ddp.event.on('address', (address) => {
-    let buffer = '';
     logger.debug(`Trying to connect to ${address}:16180`);
 
-    let socket = io.connect(`http://${address}:16180`);
+    if (socket != null) {
+      socket.removeAllListeners();
+      socket.close();
+      socket = null;
+    }
+    socket = io.connect(`http://${address}:16180`);
 
     socket.on('connect', () => {
       logger.debug('TCP connection established');
@@ -33,21 +56,13 @@ export function execute(): void {
       throw 'Unauthorized';
     });
 
-    socket.on('data', (data) => {
-      buffer += data;
+    socket.emit('authentication', { workerId: '5df46b27efa6f5157ab2d7fd', password: '123' });
 
-      let packet;
+    socket.on('data', (data: PDU) => {
       try {
-        do {
-          // This may throw an exception
-          packet = ExposeFirstPDU(buffer);
-
-          // This may throw an exception
-          buffer = RemoveFirstPDU(buffer);
-
-          dwpManager.treat(packet, socket);
-        } while (buffer.length !== 0);
+        dwpManager.treat(data, socket);
       } catch (e) {
+        logger.error(e);
         // It is normal to end up here
         // Do not treat exception!
       }

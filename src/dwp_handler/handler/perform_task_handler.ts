@@ -8,6 +8,7 @@ import { PerformTask, WorkerState, PerformTaskResponse, ProtocolType, ReturnCode
 import * as taskManager from './../../manager/task_manager';
 import * as stateManager from './../../manager/state_manager';
 import * as tempManager from './../../manager/temp_manager';
+import { send } from '../../communication';
 
 export function execute(pdu: PerformTask, socket: SocketIOClient.Socket): Promise<void> {
   if (stateManager.getCurrentState() === WorkerState.Paused) {
@@ -27,7 +28,7 @@ export function execute(pdu: PerformTask, socket: SocketIOClient.Socket): Promis
           task: pdu.task,
           code: ReturnCode.Executing,
         }
-        socket.emit('data', EncapsulatePDU(response));
+        send(response);
 
         const options = {
           cwd: tempManager.getCWD(pdu.task.id)
@@ -59,7 +60,7 @@ export function execute(pdu: PerformTask, socket: SocketIOClient.Socket): Promis
               taskResult.output = stdout.replace(new RegExp('NaN,', 'g'), 'null,');
             }
 
-            return socket.emit('data', EncapsulatePDU(taskResult));
+            return send(taskResult);
           }
         );
       })
@@ -74,7 +75,7 @@ export function execute(pdu: PerformTask, socket: SocketIOClient.Socket): Promis
         taskResult.code = ReturnCode.Error;
         taskResult.output = e.message;
 
-        socket.emit('data', EncapsulatePDU(taskResult), (err => {
+        send(taskResult, (err => {
           if (err) logger.error(err, "Could not send failed task result");
         }));
         logger.error(e);
@@ -90,7 +91,7 @@ export function execute(pdu: PerformTask, socket: SocketIOClient.Socket): Promis
     taskResult.code = ReturnCode.Error;
     taskResult.output = e.message;
 
-    socket.emit('data', EncapsulatePDU(taskResult), (err => {
+    send(taskResult, (err => {
       if (err) logger.error(err, "Could not send failed task result");
     }));
 

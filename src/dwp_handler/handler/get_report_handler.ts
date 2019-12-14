@@ -5,6 +5,7 @@ import * as stateManager from './../../manager/state_manager';
 import * as taskManager from './../../manager/task_manager';
 import * as languageManager from './../../manager/language_manager';
 import * as net from 'net';
+import { send } from "../../communication";
 
 const configuration = Config.getConfiguration();
 
@@ -42,5 +43,5 @@ export async function execute(pdu: GetReport, socket: SocketIOClient.Socket): Pr
     }
   }
 
-  socket.emit('data', EncapsulatePDU(response));
+  send(response);
 };

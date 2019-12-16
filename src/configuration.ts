@@ -4,17 +4,13 @@ import { logger } from './logger';
 import { LanguageInfo } from 'dispatcher-protocol';
 
 export interface Configuration {
-  dispatcherAddress?: string,
-  languages?: {
-    allow_others?: boolean,
-    map?: {
-      [propName: string]: LanguageInfo,
-    },
-  },
-  alias?: string,
+  workerId: string,
+  workerPassword: string,
+  dispatcherAddress: string,
+  dispatcherPort: number,
 }
 
-let configuration: Configuration = {};
+let configuration: Configuration;
 
 load();
 
@@ -27,18 +23,36 @@ export function getConfiguration(): Configuration {
 };
 
 function load(): void {
-  try {
-    configuration = JSON.parse(fs.readFileSync(`${__dirname}/../config/config.json`, 'utf8').replace(/^\uFEFF/, ''));
-  } catch (err) {
-    logger.error('Error while loading configuration files, treating everything as default');
+  let path: string;
+  if (process.env.NODE_ENV == 'production') {
+    path = `${__dirname}/../config/config.json`;
+  } else {
+    path = `${__dirname}/../config/config.sample.json`;
   }
 
-  treatDefaultValues();
-}
+  try {
+    configuration = JSON.parse(fs.readFileSync(path, 'utf8').replace(/^\uFEFF/, ''));
 
-function treatDefaultValues(): void {
-  if (configuration.dispatcherAddress && !helpers.validateIp(configuration.dispatcherAddress)) {
-    logger.debug('Master\'s defined IP is invalid. Removing configuration...');
-    configuration.dispatcherAddress = undefined;
+    if (configuration.dispatcherAddress === undefined) {
+      logger.warn('Dispatcher address is not configured, falling back to localhost');
+      configuration.dispatcherAddress = '127.0.0.1';
+    }
+    if (configuration.dispatcherPort === undefined) {
+      logger.warn('Dispatcher port is not configured, falling back to default 16180');
+      configuration.dispatcherPort = 16180;
+    }
+
+    if (configuration.workerId === undefined) {
+      logger.fatal('Id of the worker is not configured, cannot proceed');
+      throw new Error('Missing worker id');
+    }
+
+    if (configuration.workerPassword === undefined) {
+      logger.fatal('Password of the worker is not configured, cannot proceed');
+      throw new Error('Missing worker password');
+    }
+  } catch (err) {
+    logger.error(`Error while loading configuration files: ${err}`);
+    throw err;
   }
 }

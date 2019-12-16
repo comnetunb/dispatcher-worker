@@ -23,13 +23,13 @@ export async function testLanguages(pdu: LanguageCommand) {
   logger.debug('Executing tests for each language listed on config file');
   for (let i = 0; i < languages.length; i += 1) {
     const languageName = languages[i].name;
-    config.languages.map[languageName] = await executeLanguageTest(languages[i]); // eslint-disable-line
+    // config.languages.map[languageName] = await executeLanguageTest(languages[i]); // eslint-disable-line
 
-    if (config.languages.map[languageName].supported) {
-      logger.debug(`Test of language '${languageName}' succeeded`);
-    } else {
-      logger.error(`Test of language '${languageName}' failed`);
-    }
+    // if (config.languages.map[languageName].supported) {
+    //   logger.debug(`Test of language '${languageName}' succeeded`);
+    // } else {
+    //   logger.error(`Test of language '${languageName}' failed`);
+    // }
   }
   logger.debug(`Tests done. Total number of languages tested: ${languages.length}`);
 };
@@ -67,19 +67,19 @@ export async function getLanguageSupport(pdu: GetLanguageSupport, socket: Socket
     }
   };
 
-  const { map } = config.languages;
+  // const { map } = config.languages;
 
-  if (map[pdu.name] !== undefined) {
-    packet.languageInfo = map[pdu.name];
-  } else if (config.languages.allow_others) {
-    try {
-      const testedLanguage = await executeLanguageTest(pdu);
-      map[pdu.name] = testedLanguage;
-      packet.languageInfo = testedLanguage;
-    } catch (err) {
-      logger.error(err);
-    }
-  }
+  // if (map[pdu.name] !== undefined) {
+  //   packet.languageInfo = map[pdu.name];
+  // } else if (config.languages.allow_others) {
+  //   try {
+  //     const testedLanguage = await executeLanguageTest(pdu);
+  //     map[pdu.name] = testedLanguage;
+  //     packet.languageInfo = testedLanguage;
+  //   } catch (err) {
+  //     logger.error(err);
+  //   }
+  // }
   send(packet);
 };
 
@@ -89,13 +89,13 @@ export async function getLanguageSupport(pdu: GetLanguageSupport, socket: Socket
  * 'name' and also possibly 'command' and 'version', if they are defined on runtime.
  */
 export function getSupportedLanguages(): LanguageInfo[] {
-  const { map } = config.languages;
+  // const { map } = config.languages;
   const supportedLanguages: LanguageInfo[] = [];
-  for (let key in map) { // eslint-disable-line
-    // check if the property/key is defined in the object itself, not in parent
-    if (!map.hasOwnProperty(key)) continue; // eslint-disable-line
+  // for (let key in map) { // eslint-disable-line
+  //   // check if the property/key is defined in the object itself, not in parent
+  //   if (!map.hasOwnProperty(key)) continue; // eslint-disable-line
 
-    supportedLanguages.push(map[key]);
-  }
+  //   supportedLanguages.push(map[key]);
+  // }
   return supportedLanguages;
 };

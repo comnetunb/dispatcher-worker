@@ -40,4 +40,5 @@ COPY . /opt/app
 # so that signals are passed properly. Note the code in index.js is needed to catch Docker signals
 # using node here is still more graceful stopping then npm with --init afaik
 # I still can't come up with a good production way to run with npm and graceful shutdown
-CMD [ "node", "index.js" ]
+RUN npm run build
+CMD [ "node", "dist/index.js" ]

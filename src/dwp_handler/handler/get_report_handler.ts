@@ -33,10 +33,6 @@ export async function execute(pdu: GetReport, socket: SocketIOClient.Socket): Pr
     };
   }
 
-  if (pdu.alias) {
-    response.alias = configuration.alias;
-  }
-
   if (pdu.supportedLanguages) {
     response.languages = {
       languages: languageManager.getSupportedLanguages(),

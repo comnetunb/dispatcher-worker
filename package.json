@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsnd --watch --respawn src/index.ts",
-    "start": "npm run build && node dist/index.js",
+    "start": "node dist/index.js",
     "lint": "esw *.js manager dwp_handler --color",
     "test": "npm run lint"
   },

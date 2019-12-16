@@ -1,8 +1,0 @@
-﻿{
-  "alias": "ARCTURUS01",
-  "dispatcherAddress": "127.0.0.1",
-  "languages": {
-    "allow_others": true,
-    "list": ["java", "python", "c++"]
-  }
-}

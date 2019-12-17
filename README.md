@@ -46,7 +46,7 @@ After installing Docker, just run our latest published docker image:
 $ sudo docker run [--network="host"] -v <configuration-file-path>:/opt/app/config/config.json -d comnetunb/dispatcher-worker
 ```
 
-The brackets around `--network="host"` mean that this argument is optional. The `--network="host"` argument tells the docker container to use the host's network as its own. You should use it if the dispatcher is not accessible via the internet, i.e., it is inside your local network, therefore it is easier to simply use the host's network then to configure an access to the network, from the container.
+The brackets around `--network="host"` mean that this argument is optional. The `--network="host"` argument tells the docker container to use the host's network as its own. You should use it if the dispatcher is not accessible via the internet, i.e., it is inside your local network, therefore it is easier to simply use the host's network as opposed to configure an access to the network, from the container.
 
 The `<configuration-file-path>` must be the full path of your configuration file, downloadable via the Dispatcher Web Interface. The `-v` flag maps the local config file to be used by the worker inside the container.
 

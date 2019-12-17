@@ -1,5 +1,4 @@
 // @ts-ignore
-import * as parseDataUrl from 'parse-data-url';
 import * as net from 'net';
 import { logger } from '../../logger';
 import { PerformTask, WorkerState, PerformTaskResponse, ProtocolType, ReturnCode, EncapsulatePDU, TaskResult, ProtocolFile } from 'dispatcher-protocol';

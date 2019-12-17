@@ -7,15 +7,30 @@ See also:
 - [Master](https://github.com/comnetunb/dispatcher-master)
 - [Protocol](https://github.com/comnetunb/dispatcher-protocol)
 
-## Getting started
+## Development
 
 ### Pre requisites
 
 - [Node](https://nodejs.org/en/download/)
 
-#### For Docker
+### Running
 
-If you want to run it as a dockerized container, everything you need is to install Docker CE (Community Edition):
+After installing Node, download and run the Worker with:
+
+```bash
+$ git clone https://github.com/comnetunb/dispatcher-worker
+$ cd dispatcher-worker
+$ npm install
+$ npm run dev
+```
+
+If you'd like to change the [Configuration file](#configuration-file), open it at `dispatcher-worker/config/config.sample.json`.
+
+## Actual use
+
+### Pre requisites
+
+You need to have Docker installed
 
 - [CentOS](https://docs.docker.com/install/linux/docker-ce/centos/)
 - [Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
@@ -25,44 +40,14 @@ If you want to run it as a dockerized container, everything you need is to insta
 
 ### Running
 
-After installing Node, download and run the Worker with:
-
-```bash
-$ git clone https://github.com/comnetunb/dispatcher-worker
-$ cd dispatcher-worker
-$ npm install --only=prod
-$ node index.js
-```
-
-If you'd like to change the [Configuration file](#configuration-file), open it at `dispatcher-worker/config/config.json`.
-
-#### For Docker
-
 After installing Docker, just run our latest published docker image:
 
 ```bash
-$ sudo docker run [-v <configuration-file-path>:/opt/app/config/json] -d comnetunb/dispatcher-worker
+$ sudo docker run [--network="host"] -v <configuration-file-path>:/opt/app/config/config.json -d comnetunb/dispatcher-worker
 ```
 
-The first option, `-v <configuration-file-path>:/opt/app/config/json`, is optional and maps a local config file to be used by the worker. If you wish to use a configuration file, change `<configuration-file-path>` for the absolute path of the configuration file you would like to use. For more details regarding the configuration file, see [Configuration file](#configuration-file).
+The brackets around `--network="host"` mean that this argument is optional. The `--network="host"` argument tells the docker container to use the host's network as its own. You should use it if the dispatcher is not accessible via the internet, i.e., it is inside your local network, therefore it is easier to simply use the host's network then to configure an access to the network, from the container.
 
+The `<configuration-file-path>` must be the full path of your configuration file, downloadable via the Dispatcher Web Interface. The `-v` flag maps the local config file to be used by the worker inside the container.
 
-
-## Configuration file
-You can tweak the worker configuration on a json file that can have the following format:
-
-```json
-{
-  "alias": "ARCTURUS01",
-  "dispatcherAddress": "199.198.197.196",
-  "languages": {
-    "allow_others": true,
-    "list": ["java", "python", "c++"]
-  }
-}
-```
-
-### Properties
-- alias: defines an alias for the worker machine
-- dispatcherAddress: sets the IP of a reachable master. If this property is set, the application will try to connect to it directly. If this property is not set, the connection mechanism will be the automatic discovery, that only works on a master configured on a local network shared by the worker aplication.
-- languages: lists the languages currently supported by the machine
+This file must be present for the Worker to know the address of the dispatcher and credentials that will be used for authentication.

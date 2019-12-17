@@ -26,6 +26,17 @@ $ npm run dev
 
 If you'd like to change the [Configuration file](#configuration-file), open it at `dispatcher-worker/config/config.sample.json`.
 
+### Deploying
+
+Deployment is still pretty manual, an automated script is coming soon...
+
+For now, here is the checklist:
+
+- Commit everything
+- Bump package json version and commit again
+- Build the docker image
+- Push both repo and docker image
+
 ## Actual use
 
 ### Pre requisites

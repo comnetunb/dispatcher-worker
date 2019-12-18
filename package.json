@@ -3,6 +3,8 @@
   "version": "1.1.0",
   "description": "Worker of the dispatching manager",
   "main": "dist/index.js",
+  "repository": "github:comnetunb/dispatcher-worker",
+  "license": "MIT",
   "contributors": [
     {
       "name": "Matheus Medeiros"

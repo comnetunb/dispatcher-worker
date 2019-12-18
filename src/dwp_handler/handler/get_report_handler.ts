@@ -1,4 +1,4 @@
-import { GetReport, Report, ProtocolType, EncapsulatePDU } from "dispatcher-protocol";
+import { GetReport, Report, ProtocolType, EncapsulatePDU, TaskInfo } from "dispatcher-protocol";
 import * as resource from '../../resource';
 import * as Config from '../../configuration';
 import * as stateManager from './../../manager/state_manager';
@@ -29,7 +29,14 @@ export async function execute(pdu: GetReport, socket: SocketIOClient.Socket): Pr
 
   if (pdu.tasks) {
     response.tasks = {
-      tasks: taskManager.getTasks(),
+      tasks: taskManager.getTasks().map((taskExec) => {
+        let taskInfo: TaskInfo = {
+          id: taskExec.taskId,
+          startTime: taskExec.startTime,
+          pid: taskExec.process.pid,
+        };
+        return taskInfo;
+      }),
     };
   }
 

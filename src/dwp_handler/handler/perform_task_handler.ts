@@ -43,6 +43,11 @@ export function execute(pdu: PerformTask, socket: SocketIOClient.Socket): Promis
               output: '',
             }
 
+            if (err && err.killed) {
+              logger.error(`Simulation has been killed.\n${err}`);
+              return;
+            }
+
             if (err) {
               logger.error(`Simulation has finished with error.\n${err}`);
               taskResult.code = ReturnCode.Error;

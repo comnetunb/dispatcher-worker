@@ -2,10 +2,28 @@
 
 Save application on a distributed system managed by the Dispatcher [Master](https://github.com/comnetunb/dispatcher-master)). This is a service where its main purpose is to process tasks sent by master.
 
-See also: 
+See also:
 
 - [Master](https://github.com/comnetunb/dispatcher-master)
 - [Protocol](https://github.com/comnetunb/dispatcher-protocol)
+
+## Installation
+
+Pre-requisites:
+
+- Install [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/).
+- Create a new worker in the Dispatcher Web Interface and downloat the configuration file.
+
+Replace the environment variable values and run the following snippet:
+
+```sh
+export DISPATCHER_WORKER_CONFIG_FILE=<path to configuration file>
+export DOCKER_COMPOSE_PATH=<path to docker-compose file>
+
+curl -L -O $DOCKER_COMPOSE_PATH https://raw.githubusercontent.com/comnetunb/dispatcher-worker/master/docker-compose.yml
+
+sudo docker-compose -f $DOCKER_COMPOSE_PATH up
+```
 
 ## Development
 
@@ -28,37 +46,9 @@ If you'd like to change the [Configuration file](#configuration-file), open it a
 
 ### Deploying
 
-Deployment is still pretty manual, an automated script is coming soon...
-
 For now, here is the checklist:
 
 - Commit everything
 - Bump package json version and commit again
 - Build the docker image
 - Push both repo and docker image
-
-## Actual use
-
-### Pre requisites
-
-You need to have Docker installed
-
-- [CentOS](https://docs.docker.com/install/linux/docker-ce/centos/)
-- [Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
-- [Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/)
-- [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-- [Others](https://docs.docker.com/install/linux/docker-ce/binaries)
-
-### Running
-
-After installing Docker, just run our latest published docker image:
-
-```bash
-$ sudo docker run [--network="host"] -v <configuration-file-path>:/opt/app/config/config.json -d comnetunb/dispatcher-worker
-```
-
-The brackets around `--network="host"` mean that this argument is optional. The `--network="host"` argument tells the docker container to use the host's network as its own. You should use it if the dispatcher is not accessible via the internet, i.e., it is inside your local network, therefore it is easier to simply use the host's network as opposed to configure an access to the network, from the container.
-
-The `<configuration-file-path>` must be the full path of your configuration file, downloadable via the Dispatcher Web Interface. The `-v` flag maps the local config file to be used by the worker inside the container.
-
-This file must be present for the Worker to know the address of the dispatcher and credentials that will be used for authentication.

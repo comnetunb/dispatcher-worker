@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  dispatcher-worker:
+    image: comnetunb/dispatcher-worker
+    container_name: dispatcher-worker
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - type: bind
+        source: "${DISPATCHER_WORKER_CONFIG_FILE}"
+        target: "/opt/app/config/config.json"
+        read_only: true
+    restart: unless-stopped

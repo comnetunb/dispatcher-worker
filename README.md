@@ -12,17 +12,24 @@ See also:
 Pre-requisites:
 
 - Install [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/).
-- Create a new worker in the Dispatcher Web Interface and downloat the configuration file.
+- Create a new worker in the Dispatcher Web Interface, download the configuration file and put it in the target machine.
 
 Replace the environment variable values and run the following snippet:
 
 ```sh
-export DISPATCHER_WORKER_CONFIG_FILE=<path to configuration file>
-export DOCKER_COMPOSE_PATH=<path to docker-compose file>
+export WORKER_CONFIG_FILE=<path to configuration file>
 
-curl -L -O $DOCKER_COMPOSE_PATH https://raw.githubusercontent.com/comnetunb/dispatcher-worker/master/docker-compose.yml
+sudo mkdir -p /opt/dispatcher-worker
+cd /opt/dispatcher-worker
 
-sudo docker-compose -f $DOCKER_COMPOSE_PATH up
+sudo curl -L https://raw.githubusercontent.com/comnetunb/dispatcher-worker/master/docker-compose.yml -o docker-compose.yml
+
+sudo mv $WORKER_CONFIG_FILE ./config.json
+chmod 600 ./config.json
+
+export DISPATCHER_WORKER_CONFIG_FILE=$(readlink -f ./config.json)
+
+sudo docker-compose up -d
 ```
 
 ## Development
